@@ -10,9 +10,11 @@ penn <- readRDS("penn_full.RDS")
 
 boxplot(as.numeric(str_sub(cornell$track.album.release_date, start = 1, end = 4))) + title("Release years of Cornell Pep Band songs")
 
+boxplot(as.numeric(str_sub(penn$track.album.release_date, start = 1, end = 4)), as.numeric(str_sub(cornell$track.album.release_date, start = 1, end = 4)), names = c("Penn", "Cornell")) + title("release years of band rep songs")
+
 boxplot(as.numeric(str_sub(penn$track.album.release_date, start = 1, end = 4))) + title("Release years of Penn Band songs")
 
-boxplot(penn$track.popularity) + title("Popularity of Penn Band songs")
+boxplot(penn$track.popularity, cornell$track.popularity, names = c("Penn", "Cornell")) + title("Popularity of band rep songs")
 
 boxplot(penn$energy) + title("Energy of Penn Band songs")
 
@@ -28,7 +30,7 @@ boxplot(penn$instrumentalness) + title("Instrumentalness of Penn Band songs")
 
 boxplot(penn$liveness) + title("Liveness of Penn Band songs")
 
-boxplot(penn$tempo) + title("Tempo of Penn Band songs")
+boxplot(penn$tempo, cornell$tempo, names = c("Penn", "Cornell")) + title("Tempo of band rep songs")
 
 boxplot(penn$valence) + title("Valence of Penn Band songs")
 
