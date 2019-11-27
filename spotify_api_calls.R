@@ -44,3 +44,9 @@ access_token <- get_spotify_access_token()
 # playlist_audio_features2 <- get_playlist_audio_features(playlist_username, playlist_uris2)
 # playlist_audio_features <- rbind(playlist_audio_features1, playlist_audio_features2)
 # saveRDS(playlist_audio_features, "cornell_full.RDS")
+
+# Loading in additional data: ethnicity, country of origin, and genre.
+# penn <- readRDS("penn_full.RDS")
+# penn_additional_data <- read_csv("penn.csv")
+# penn <- left_join(penn, penn_additional_data, by = "track.name")
+# saveRDS(penn, "penn_full.RDS")

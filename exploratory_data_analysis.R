@@ -4,6 +4,7 @@
 
 library(tidyverse)
 library(tibble)
+library(ggplot2)
 
 cornell <- readRDS("cornell_full.RDS")
 penn <- readRDS("penn_full.RDS")
@@ -53,5 +54,17 @@ boxplot(cornell$liveness) + title("Liveness of Cornell Pep Band songs")
 boxplot(cornell$tempo) + title("Tempo of Cornell Pep Band songs")
 
 boxplot(cornell$valence) + title("Valence of Cornell Pep Band songs")
+
+barplot(penn$ethnicity)
+
+# Ommited NAs are musicals.
+ggplot(data.frame(na.omit(penn$ethnicity)), aes(x=na.omit(penn$ethnicity))) +
+  geom_bar()
+
+ggplot(data.frame(penn$broad_genre1), aes(x=penn$broad_genre1)) +
+  geom_bar()
+
+ggplot(data.frame(penn$country), aes(x=penn$country)) +
+  geom_bar()
 
 ## This takes the purely older versions of songs.  If I want to get an accurate measure of popularity, I should get the most recent popular version of a song.
