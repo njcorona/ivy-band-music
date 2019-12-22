@@ -1,0 +1,7 @@
+- A song is considered to be "played" if it was on the rep at any point during the semester and was rehearsed or was planned to be rehearsed IN WRITING at least once.  Exceptions may be considered in either direction and will be explicitly noted here and no where else for clarity:
+	- Exceptions
+		- None so far.
+	- Who does this apply to so far?
+		- 19fa.
+
+- Data for each spring semester is crappy, so I may stick to fall semesters to get some nice year-by-year data.

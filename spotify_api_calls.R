@@ -1,9 +1,10 @@
 library(spotifyr)
 library(tibble)
 library(stringr)
+library(tidyverse)
 
-Sys.setenv(SPOTIFY_CLIENT_ID = '')
-Sys.setenv(SPOTIFY_CLIENT_SECRET = '')
+Sys.setenv(SPOTIFY_CLIENT_ID = '460af57f1d3f4f14b468efdb904fde2f')
+Sys.setenv(SPOTIFY_CLIENT_SECRET = 'a0807598adc74ec6be44f820f64cfeca')
 
 access_token <- get_spotify_access_token()
 
@@ -27,7 +28,7 @@ access_token <- get_spotify_access_token()
 # 
 # cornell <- readRDS("cornell.RDS")
 # 
-# penn_raw <- get_playlist(playlist_id = "6FfEMbtwq4ptaJe1u0xmdx", authorization = access_token) 
+# penn_raw <- get_playlist(playlist_id = "6FfEMbtwq4ptaJe1u0xmdx", authorization = access_token)
 # penn <- as_tibble(penn_raw$tracks$items)
 # saveRDS(penn_raw, "penn_json.RDS")
 # saveRDS(penn, "penn_tibble.RDS")
@@ -50,3 +51,11 @@ access_token <- get_spotify_access_token()
 # penn_additional_data <- read_csv("penn.csv")
 # penn <- left_join(penn, penn_additional_data, by = "track.name")
 # saveRDS(penn, "penn_full.RDS")
+
+
+playlist_username <- 'rkludtihkgic030glg9qaandf'
+playlist_uris <- c('7zVIIUAaRWnBnbzNHVxL7D')
+playlist_audio_features <- get_playlist_audio_features(playlist_username, playlist_uris)
+penn_additional_data <- read_csv("penn.csv")
+penn <- left_join(playlist_audio_features, penn_additional_data, by = "track.name")
+saveRDS(penn, "penn_fullrep19fa.RDS")

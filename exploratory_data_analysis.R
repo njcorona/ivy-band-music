@@ -7,7 +7,8 @@ library(tibble)
 library(ggplot2)
 
 cornell <- readRDS("cornell_full.RDS")
-penn <- readRDS("penn_full.RDS")
+penn_fullrep19fa <- readRDS("penn_fullrep19fa.RDS")
+penn <- penn_fullrep19fa[which(penn_fullrep19fa$`19fa-played`),]
 
 boxplot(as.numeric(str_sub(cornell$track.album.release_date, start = 1, end = 4))) + title("Release years of Cornell Pep Band songs")
 
@@ -57,9 +58,20 @@ boxplot(cornell$valence) + title("Valence of Cornell Pep Band songs")
 
 barplot(penn$ethnicity)
 
-# Ommited NAs are musicals.
-ggplot(data.frame(na.omit(penn$ethnicity)), aes(x=na.omit(penn$ethnicity))) +
-  geom_bar()
+
+penn_fullrep19fa
+# Ommited NAs are musicals
+plot1 <- ggplot(data.frame(na.omit(penn$ethnicity)), aes(x=na.omit(penn$ethnicity))) +
+  geom_bar() + ylim(0, 35)
+
+plot2 <- ggplot(data.frame(na.omit(penn_fullrep19fa$ethnicity)), aes(x=na.omit(penn_fullrep19fa$ethnicity))) +
+  geom_bar() + ylim(0, 35)
+
+grid.arrange(plot1, plot2, ncol=2)
+
+# Test - fix this!
+ggplot(data.frame(na.omit(penn_fullrep19fa$ethnicity)), aes(x=na.omit(penn_fullrep19fa$ethnicity), fill = penn_fullrep19fa$`19fa-played`)[which(!is.na(penn_fullrep19fa$ethnicity))]) +
+  geom_bar() + ylim(0, 35)
 
 ggplot(data.frame(penn$broad_genre1), aes(x=penn$broad_genre1)) +
   geom_bar()
