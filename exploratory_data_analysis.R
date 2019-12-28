@@ -5,6 +5,7 @@
 library(tidyverse)
 library(tibble)
 library(ggplot2)
+library(gridExtra)
 
 cornell <- readRDS("cornell_full.RDS")
 penn_fullrep19fa <- readRDS("penn_fullrep19fa.RDS")
@@ -56,22 +57,41 @@ boxplot(cornell$tempo) + title("Tempo of Cornell Pep Band songs")
 
 boxplot(cornell$valence) + title("Valence of Cornell Pep Band songs")
 
-barplot(penn$ethnicity)
+# Excludes Big Spender and Time Warp bc no clear artist (musicals)
+rbind(
+  summarise(.data = penn_fullrep19fa[!is.na(penn_fullrep19fa$ethnicity),] %>% group_by(ethnicity), n = n()) %>% mutate(Rep = "Full"),
+  summarise(.data = penn[!is.na(penn$ethnicity),] %>% group_by(ethnicity), n = n()) %>% mutate(Rep = "Played")
+) %>%
+  ggplot(aes(x = ethnicity, y = n, fill = Rep, group = n)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  ylim(0, 35)  +
+  ggtitle("Ethnicity of Song Artists by Rep")
+
+# Excludes Big Spender and Time Warp bc no clear artist (musicals)
+rbind(
+  summarise(.data = penn_fullrep19fa[!is.na(penn_fullrep19fa$white),] %>% group_by(white), n = n()) %>% mutate(Rep = "Full"),
+  summarise(.data = penn[!is.na(penn$white),] %>% group_by(white), n = n()) %>% mutate(Rep = "Played")
+) %>%
+  ggplot(aes(x = Rep, y = n, fill = white, group = n)) + # group sets order of bars by n (count)
+  geom_bar(stat = "identity", position = position_dodge()) +
+  ylim(0, 35) +
+  ggtitle("Number of Songs by White/Non-White Artists by Rep")
 
 
-penn_fullrep19fa
-# Ommited NAs are musicals
-plot1 <- ggplot(data.frame(na.omit(penn$ethnicity)), aes(x=na.omit(penn$ethnicity))) +
-  geom_bar() + ylim(0, 35)
+test1 <- summarise(.data = penn_fullrep19fa[!is.na(penn_fullrep19fa$white),] %>% group_by(white), n = n()) %>% mutate(Rep = "Full")
+test1$n <- test1$n / sum(test1$n)
 
-plot2 <- ggplot(data.frame(na.omit(penn_fullrep19fa$ethnicity)), aes(x=na.omit(penn_fullrep19fa$ethnicity))) +
-  geom_bar() + ylim(0, 35)
+test2 <- summarise(.data = penn[!is.na(penn$white),] %>% group_by(white), n = n()) %>% mutate(Rep = "Played")
+test2$n <- test2$n / sum(test2$n)
 
-grid.arrange(plot1, plot2, ncol=2)
-
-# Test - fix this!
-ggplot(data.frame(na.omit(penn_fullrep19fa$ethnicity)), aes(x=na.omit(penn_fullrep19fa$ethnicity), fill = penn_fullrep19fa$`19fa-played`)[which(!is.na(penn_fullrep19fa$ethnicity))]) +
-  geom_bar() + ylim(0, 35)
+# Excludes Big Spender and Time Warp bc no clear artist (musicals)
+rbind(
+  test1,
+  test2
+) %>%
+  ggplot(aes(x = Rep, y = n, fill = white)) + # group sets order of bars by n (count)
+  geom_bar(stat = "identity") +
+  ggtitle("Percent of Songs by White/Non-White Artists by Rep")
 
 ggplot(data.frame(penn$broad_genre1), aes(x=penn$broad_genre1)) +
   geom_bar()
